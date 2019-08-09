@@ -1,4 +1,4 @@
-data	segment	;сегмент данных
+data	segment
 massage	db	'Hello$'
 newstr	db	10, '$', 13
 str5	db	'Variant5$'
@@ -14,25 +14,25 @@ pa_per1	dd	per1
 num	dd	2.55
 data	ends
 stk	segment	stack
-	db	256 dup('?')	;сегмент стека
+	db	256 dup('?')
 stk	ends
-code	segment	;начало сегмента кода
+code	segment	
 main:
 	assume cs:code, ds:data, ss:stk
-	mov	ax, data ;поместить в ds адрес сегмента данных
+	mov	ax, data 
 	mov	ds, ax
-	mov	ah, 9 ;вывод строки символов
-	mov	dx, offset massage ; запись эффективного адреса строки
-	int	21h ;вызов прерывания с номером 21h для функции 9
+	mov	ah, 9 
+	mov	dx, offset massage 
+	int	21h 
 	mov	ah, 9
 	mov	dx, offset newstr
 	int	21h
 	mov	ah, 9
 	mov	dx, offset str5
 	int	21h
-	mov	ah, 7 ;ожидание ввода символа с клавиатуры
-	int	21h ;вызов прерывания с номером 21h для функции 7
-	mov	ax, 4c00h ;завершение программы
-	int	21h ;вызов прерывания с номером 21h для функции 4CH
-code	ends ;конец сегмент кода
-end	main ;конец программы с точкой входа main
+	mov	ah, 7 
+	int	21h 
+	mov	ax, 4c00h 
+	int	21h 
+code	ends 
+end	main 
