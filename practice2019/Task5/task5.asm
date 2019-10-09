@@ -2,12 +2,12 @@ masm
 model small
 .stack 256
 .data
-arr1	db	-120, 32, 126, -120, 3
+arr1	db	-10, 22, 26, -120, 3
 		db	-120, 32, 126, -120, 3
 		db	-120, 32, 126, -120, 3
 		db	-120, 32, 126, -120, 3
 len = $ - arr1
-arr2	db	-120, 126, 125, -120, 75
+arr2	db	-20, 26, 15, -120, 75
 		db	-120, 32, 126, -120, 3
 		db	-120, 32, 126, -120, 3
 		db	-120, 32, 126, -120, 3
@@ -20,10 +20,13 @@ tabl	db	"0123456789ABCDEF"
 newstr db 10, 13, '$'
 rez db "**$"
 
-output macro arr
+output macro arr 
 	local m0
-	xor si, si
-	mov cx, len
+	xor ax, ax
+	mov al, len
+	sub al, kol
+	mov si, ax
+	mov cl, kol
 m0:	mov ah, 9
 	mov al, arr[si]
 	sixSS
@@ -64,13 +67,6 @@ cSpace:	mov ah, 2
 .code
 main:	mov ax, @data
 		mov ds, ax
-		
-		space 2
-		output arr1
-		nStr
-		space 2
-		output arr2
-		nStr
 
 		mov ah, 10
 		lea dx, buf
@@ -92,44 +88,37 @@ oneNum:	mov al, buf[2]
 		aad
 		
 twoNum:	mov kol, al
-		mov di, len
+		space 2
+		output arr1
+		nStr
+		space 2
+		output arr2
+		nStr
+		
+		mov di, 1
 		mov si, len-1
 		mov cl, kol
 sum:	mov al, arr2[si]
-		adc	arr1[si], al
+		adc arr1[si], al
 		mov al, arr1[si]
 		mov otvet[di], al
 		dec si
-		dec di
+		inc di
 		loop sum
-		
-		pushf
-		
+
 		jnc noPer
 		adc otvet[0], 0
 		mov al, otvet[0]
 		sixSS
-		
-noPer:	xor ax, ax
-		mov al, len+1
-		sub al, kol
-		mov si, ax
-		
-		popf
-		jnc skipDec
-		dec al
-		
-skipDec:mov bl, 2
-		mul bl
-		cmp ax, 0
-		je skipSp
-		space ax
-skipSp:	mov cl, kol
-		
-outAns:	mov al, otvet[si]
+		jmp noSpace
+noPer:	space 2
+noSpace:mov si, word ptr kol
+		and si, 00ffh
+		mov cl, kol
+outOtv:	mov al, otvet[si]
 		sixSS
-		inc si
-		loop outAns
+		dec si
+		loop outOtv
 		
 		mov ah, 7
 		int 21h
