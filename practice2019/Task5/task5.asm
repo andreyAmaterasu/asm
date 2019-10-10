@@ -55,9 +55,9 @@ sixSS macro
 	int 21h
 	endm
 	
-space macro cycle
+space macro
 	local cSpace 
-	mov cx, cycle
+	mov cx, 2
 cSpace:	mov ah, 2
 	mov dl, ' '
 	int 21h
@@ -88,10 +88,10 @@ oneNum:	mov al, buf[2]
 		aad
 		
 twoNum:	mov kol, al
-		space 2
+		space
 		output arr1
 		nStr
-		space 2
+		space
 		output arr2
 		nStr
 		
@@ -111,7 +111,7 @@ sum:	mov al, arr2[si]
 		mov al, otvet[0]
 		sixSS
 		jmp noSpace
-noPer:	space 2
+noPer:	space
 noSpace:mov si, word ptr kol
 		and si, 00ffh
 		mov cl, kol
