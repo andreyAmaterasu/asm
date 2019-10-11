@@ -7,28 +7,34 @@ num	db	0fh, 0bh, 1h, -5h, 0ah
 	db	9h, 0ch, 1h, 7h, -6h
 	db	0eh, -4h, 0ah, 0ah, 0bh
 	db	-2h, 2h, 8h, 0dh, 0fh
+len = $ - num
 buf	db	5
 	db 	?
 	db	5 dup(?)
 tabl	db	"0123456789ABCDEF"
 newstr db 10, 13, '$'
-rez db "0*$"
+rez db "**$"
 
 output macro
-	xor si, si
+	mov si, 19
 	mov cl, kol
 m0:	mov ah, 9
 	mov al, num[si]
 	sixSS
-	inc si
+	dec si
 	loop m0
 	endm
 	
 sixSS macro
+	push ax
+	shr al, 4
 	lea bx, tabl
+	xlat
+	mov rez, al
+	pop ax
 	and al, 0fh
 	xlat
-	mov rez+1, al
+	mov rez + 1, al
 	mov ah, 9
 	lea dx, rez
 	int 21h
@@ -76,19 +82,19 @@ oneNum:	mov al, buf[2]
 		aad
 		
 twoNum:	mov kol, al
-
+		nStr
 		output
 		mov ah, 2
 		mov dl, 'h'
 		int 21h
 		nStr
 		
-		xor si, si
+		mov si, len-1
 		mov cl, kol
 m5:		push cx
 		call binSS
 		pop cx
-		inc si
+		dec si
 		loop m5
 		
 		mov ah, 7
