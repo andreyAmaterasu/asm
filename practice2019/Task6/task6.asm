@@ -3,7 +3,7 @@ model small
 .stack 256
 .data
 kol	db	?
-num	db	1h, 3h, 0fh, -5h, 0ah
+num	db	0fh, 0bh, 1h, -5h, 0ah
 	db	9h, 0ch, 1h, 7h, -6h
 	db	0eh, -4h, 0ah, 0ah, 0bh
 	db	-2h, 2h, 8h, 0dh, 0fh
