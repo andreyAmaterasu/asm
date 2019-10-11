@@ -5,16 +5,13 @@ model small
 num1	db	0fh, 4h, 6h, 0ah, 1h, 2h, 0ch, 7h, 0bh, 5h
 len = $ - num1
 num2	db	5h, 0ch, 1h, 3h, 9h, 0bh, 0fh, 8h, 1h, 0ah
-N = 10
-M = 10
-buf	db	5
-	db 	?
-	db	5 dup(?)
+N = 9
+M = 5
 tabl	db	"0123456789ABCDEF"
 newstr db 10, 13, '$'
 rez db "*$"
 otvet	db	100 dup(0)
-ad	dw	0
+shift	db	0
 output macro num, cyc
 	local one
 	mov si, len-cyc
@@ -63,16 +60,17 @@ main:	mov ax, @data
 		
 		mov di, len-1
 		mov cl, M
-mll:	push cx
+nextMul:push cx
 		mov si, len-1
 		mov cl, N
 		mov bx, N+M
-ml:		push bx
+		
+multi:	push bx
 		mov al, num1[si]
 		mov bl, num2[di]
 		mul bl
 		pop bx
-		sub bx, ad
+		sub bx,	word ptr shift
 		push ax
 		and al, 0fh
 		add al, otvet[bx]
@@ -85,40 +83,22 @@ ml:		push bx
 		pop ax
 		shr ax, 4
 		add otvet[bx-1], al
-		
-		jnc m4
-		adc otvet[bx-1], 0
-m4:		add bx, ad
-	
+		add bx, word ptr shift
 		dec si
 		dec bx
-		loop ml
+		loop multi
+		
 		dec di
 		pop cx
-		inc ad
-		
-;		push si
-;		push cx
-;		push ax
-;		xor si, si
-;		mov cx, 6
-;m5:		mov al, otvet[si]
-;		sixSS
-;		inc si
-;		loop m5
-;		pop ax
-;		pop cx
-;		pop si
-;		nStr
-		loop mll
-		
+		inc shift
+		loop nextMul
 		
 		xor si, si
 		mov cx, N+M+1
-m5:		mov al, otvet[si]
+print:	mov al, otvet[si]
 		sixSS
 		inc si
-		loop m5
+		loop print
 		
 		mov ah, 7
 		int 21h
