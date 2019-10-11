@@ -12,7 +12,7 @@ buf	db	5
 	db	5 dup(?)
 tabl	db	"0123456789ABCDEF"
 newstr db 10, 13, '$'
-rez db "*$"
+rez db "0*$"
 
 output macro
 	xor si, si
@@ -28,7 +28,7 @@ sixSS macro
 	lea bx, tabl
 	and al, 0fh
 	xlat
-	mov rez, al
+	mov rez+1, al
 	mov ah, 9
 	lea dx, rez
 	int 21h

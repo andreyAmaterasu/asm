@@ -2,20 +2,19 @@ masm
 model small
 .stack 256
 .data
-num1	db	0fh, 4h, 0fh, 0fh, 0fh
+num1	db	0fh, 4h, 6h, 0ah, 1h, 2h, 0ch, 7h, 0bh, 5h
 len = $ - num1
-num2	db	5h, 0ch, 1h, 0ch, 0ah
-N = 3
-M = 2
+num2	db	5h, 0ch, 1h, 3h, 9h, 0bh, 0fh, 8h, 1h, 0ah
+N = 10
+M = 10
 buf	db	5
 	db 	?
 	db	5 dup(?)
 tabl	db	"0123456789ABCDEF"
 newstr db 10, 13, '$'
 rez db "*$"
-otvet	db	6 dup(0)
-ad	dw	1
-sb	dw	0
+otvet	db	100 dup(0)
+ad	dw	0
 output macro num, cyc
 	local one
 	mov si, len-cyc
@@ -55,56 +54,67 @@ cSpace:	mov ah, 2
 main:	mov ax, @data
 		mov ds, ax
 		
-		space 1
+		space M+1
 		output num1, N
 		nStr
-		space 2
+		space N+1
 		output num2, M
 		nStr
 		
 		mov di, len-1
-		mov cl, 2
+		mov cl, M
 mll:	push cx
 		mov si, len-1
 		mov cl, N
-ml:		mov al, num1[si]
+		mov bx, N+M
+ml:		push bx
+		mov al, num1[si]
 		mov bl, num2[di]
 		mul bl
-		add si, ad
-;		add al, otvet[si]
-;		mov otvet[si], al
-		add otvet[si], al
-		sub si, ad
-		
-		cmp al, 0ah
-		jb	m9
-		
-		cmp al, 0fh
-		ja m9
-		sub si, sb
-		add otvet[si], 1
-		add si, sb
-		jmp m10
-m9:
-		
+		pop bx
+		sub bx, ad
+		push ax
+		and al, 0fh
+		add al, otvet[bx]
+		push ax
+		and al, 0fh
+		mov otvet[bx], al	
+		pop ax
 		shr ax, 4
-		sub si, sb
-		add otvet[si], al
-		add si, sb
-m10:		
+		add otvet[bx-1], al
+		pop ax
+		shr ax, 4
+		add otvet[bx-1], al
+		
+		jnc m4
+		adc otvet[bx-1], 0
+m4:		add bx, ad
+	
 		dec si
+		dec bx
 		loop ml
 		dec di
 		pop cx
-		dec ad
-		inc sb
+		inc ad
 		
+;		push si
+;		push cx
+;		push ax
+;		xor si, si
+;		mov cx, 6
+;m5:		mov al, otvet[si]
+;		sixSS
+;		inc si
+;		loop m5
+;		pop ax
+;		pop cx
+;		pop si
+;		nStr
 		loop mll
 		
 		
-		
 		xor si, si
-		mov cx, 6
+		mov cx, N+M+1
 m5:		mov al, otvet[si]
 		sixSS
 		inc si
