@@ -2,11 +2,11 @@ masm
 model small
 .stack 256
 .data
-num1	db	0fh, 4h, 6h, 0ah, 1h, 2h, 0ch, 7h, 0bh, 5h
+num1	db	0fh, 3h, 9h, 9h, 0ch, 0ah, 5h, 1h
 len = $ - num1
-num2	db	5h, 0ch, 1h, 3h, 9h, 0bh, 0fh, 8h, 1h, 0ah
-N = 9
-M = 5
+num2	db	0h, 0h, 9h, 9h, 0ch, 0dh, 7h, 0ah
+N = 8
+M = 6
 tabl	db	"0123456789ABCDEF"
 newstr db 10, 13, '$'
 rez db "*$"

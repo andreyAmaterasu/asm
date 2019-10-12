@@ -43,27 +43,38 @@ m3:	endm
 .code
 main:	mov ax, @data
 		mov ds, ax
-
-		xor di, di
+		
 		xor si, si
+		xor di, di
+		xor bx, bx
 		mov cx, 5
-m0:		push cx
-		mov al, arr[si]
+m1:		add di, si
+
+		push cx
+		mov al, arr[di]
 		mov max, al
+		push bx
 		sixSS
-		inc si
+		pop bx
+		inc di
 		mov cx, 4
-m1:		mov al, arr[si]
+m0:		mov al, arr[di]
 		search
+		push bx
 		sixSS
-		inc si
-		loop m1
-		nStr
-		pop cx
-		mov al, max
-		mov arrMax[di], al
+		pop bx
 		inc di
 		loop m0
+		
+		nStr
+		
+		mov al, max
+		mov arrMax[bx], al
+		inc bx
+		xor di, di
+		add si, 5
+		pop cx
+		loop m1
 		
 		nStr
 		
