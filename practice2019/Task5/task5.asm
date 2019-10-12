@@ -88,6 +88,7 @@ oneNum:	mov al, buf[2]
 		aad
 		
 twoNum:	mov kol, al
+		nStr
 		space
 		output arr1
 		nStr

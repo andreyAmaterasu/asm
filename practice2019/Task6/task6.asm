@@ -3,10 +3,10 @@ model small
 .stack 256
 .data
 kol	db	?
-num	db	0fh, 0bh, 1h, -5h, 0ah
-	db	9h, 0ch, 1h, 7h, -6h
-	db	0eh, -4h, 0ah, 0ah, 0bh
-	db	-2h, 2h, 8h, 0dh, 0fh
+num	db	4fh, 0fbh, 1fh, -5h, 0a2h
+	db	99h, 0fch, 01h, 0eeh, -6h
+	db	03eh, -4h, 75h, 59h, 9bh
+	db	-2h, 21h, 08h, 5dh, 0efh
 len = $ - num
 buf	db	5
 	db 	?

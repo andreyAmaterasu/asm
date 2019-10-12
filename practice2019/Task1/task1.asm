@@ -48,30 +48,27 @@ main:	mov ax, @data
 		xor di, di
 		xor bx, bx
 		mov cx, 5
-m1:		add di, si
-
-		push cx
-		mov al, arr[di]
+m1:		push cx
+		mov al, arr[si][bx]
 		mov max, al
-		push bx
-		sixSS
-		pop bx
-		inc di
-		mov cx, 4
-m0:		mov al, arr[di]
+		;push bx
+		;sixSS
+		;pop bx
+		;inc bx
+		mov cx, 5
+m0:		mov al, arr[si][bx]
 		search
 		push bx
 		sixSS
 		pop bx
-		inc di
+		inc bx
 		loop m0
-		
 		nStr
 		
 		mov al, max
-		mov arrMax[bx], al
-		inc bx
-		xor di, di
+		mov arrMax[di], al
+		inc di
+		xor bx, bx
 		add si, 5
 		pop cx
 		loop m1
