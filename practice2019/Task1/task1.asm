@@ -51,11 +51,11 @@ main:	mov ax, @data
 m1:		push cx
 		mov al, arr[si][bx]
 		mov max, al
-		;push bx
-		;sixSS
-		;pop bx
-		;inc bx
-		mov cx, 5
+		push bx
+		sixSS
+		pop bx
+		inc bx
+		mov cx, 4
 m0:		mov al, arr[si][bx]
 		search
 		push bx
